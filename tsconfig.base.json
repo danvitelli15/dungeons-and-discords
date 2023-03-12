@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@dnd/discord": ["libs/discord/src/index.ts"]
+      "@dnd/discord": ["libs/discord/src/index.ts"],
+      "@dnd/dm-chat": ["libs/dm-chat/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
