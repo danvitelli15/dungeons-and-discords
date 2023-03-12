@@ -1,3 +1,7 @@
+import {
+  Interaction,
+  RESTPostAPIChatInputApplicationCommandsJSONBody,
+} from 'discord.js';
 import { IRegisteredSlashCommand } from './registered-slash-command.interface';
 
 export class SlashCommandRegistry {
@@ -10,17 +14,32 @@ export class SlashCommandRegistry {
     return SlashCommandRegistry._registry;
   }
 
-  private _commands: IRegisteredSlashCommand[];
+  private _commands: { [name: string]: IRegisteredSlashCommand };
 
   private constructor() {
-    this._commands = [];
+    this._commands = {};
   }
 
   public get commandCount(): number {
-    return this._commands.length;
+    return Object.keys(this._commands).length;
+  }
+
+  public get commandMetadata(): RESTPostAPIChatInputApplicationCommandsJSONBody[] {
+    return Object.keys(this._commands).map((key) => {
+      return this._commands[key].metadata.toJSON();
+    });
   }
 
   public registerCommand(command: IRegisteredSlashCommand): void {
-    this._commands.push(command);
+    console.log('registering command');
+    this._commands[command.metadata.name] = command;
+  }
+
+  public async executeCommand(interaction: Interaction): Promise<void> {
+    if (!interaction.isCommand()) return;
+    const command = this._commands[interaction.commandName];
+    if (command) {
+      command.execute(interaction);
+    }
   }
 }

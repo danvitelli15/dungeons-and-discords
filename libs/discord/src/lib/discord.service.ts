@@ -16,12 +16,13 @@ export class DiscordService implements OnModuleInit {
     this.rest = new REST({ version: '10' }).setToken(this.config.token);
   }
 
-  onModuleInit() {
+  async onModuleInit() {
+    this.client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
     if (SlashCommandRegistry.registry.commandCount > 0) {
-      this.registerSlashCommands();
+      await this.registerSlashCommands();
     }
 
-    this.client = new Client({ intents: [GatewayIntentBits.Guilds] });
     this.client.once(Events.ClientReady, () =>
       this.logger.log('Discord client ready')
     );
@@ -30,13 +31,18 @@ export class DiscordService implements OnModuleInit {
 
   private async registerSlashCommands() {
     this.logger.log('Registering slash commands');
-    // const data = await this.rest.put(
-    //   Routes.applicationGuildCommands(
-    //     this.config.clientID,
-    //     this.config.guildID
-    //   ),
-    //   { body: [] }
-    // );
-    // this.logger.log(`Registered ${(data as []).length} slash commands`);
+    const data = await this.rest.put(
+      Routes.applicationGuildCommands(
+        this.config.clientID,
+        this.config.guildID
+      ),
+      { body: SlashCommandRegistry.registry.commandMetadata }
+    );
+    this.logger.log(`Registered ${(data as []).length} slash commands`);
+
+    this.client.on(Events.InteractionCreate, async (interaction) => {
+      this.logger.log('Received interaction');
+      SlashCommandRegistry.registry.executeCommand(interaction);
+    });
   }
 }

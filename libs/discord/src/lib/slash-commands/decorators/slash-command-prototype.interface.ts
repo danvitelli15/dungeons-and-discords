@@ -1,4 +1,13 @@
-import { IRegisteredSubCommand } from '../registered-sub-command.interface';
+import { SlashCommandSubcommandBuilder } from 'discord.js';
+
+export type SubCommandBuilderFunction = (
+  subcommandGroup: SlashCommandSubcommandBuilder
+) => SlashCommandSubcommandBuilder;
+
+export interface IRegisteredSubCommand {
+  metadata: SubCommandBuilderFunction;
+  execute: (interaction: any) => Promise<void>;
+}
 
 export interface ISlashCommandPrototype {
   subCommands: IRegisteredSubCommand[];

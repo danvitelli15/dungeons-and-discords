@@ -1,4 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandRegistry } from '../slash-commands-registry.singleton';
 import { ISlashCommandOptions } from './slash-command-options.interface';
 
 export const SlashCommand = (options: ISlashCommandOptions) => {
@@ -20,6 +21,10 @@ export const SlashCommand = (options: ISlashCommandOptions) => {
       console.log(typeof target, target);
       console.log(propertyKey);
       console.log(descriptor.value);
+      SlashCommandRegistry.registry.registerCommand({
+        metadata: builder,
+        execute: descriptor.value,
+      });
     }
   };
 };
