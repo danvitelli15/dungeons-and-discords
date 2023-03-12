@@ -1,0 +1,64 @@
+{
+  "name": "dungeons-and-dscords",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/dungeons-and-dscords/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/dungeons-and-dscords",
+        "main": "apps/dungeons-and-dscords/src/main.ts",
+        "tsConfig": "apps/dungeons-and-dscords/tsconfig.app.json",
+        "assets": ["apps/dungeons-and-dscords/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/dungeons-and-dscords/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "dungeons-and-dscords:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "dungeons-and-dscords:build:development"
+        },
+        "production": {
+          "buildTarget": "dungeons-and-dscords:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/dungeons-and-dscords/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/dungeons-and-dscords/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
