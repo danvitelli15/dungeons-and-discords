@@ -2,7 +2,7 @@ import { SlashCommandSubcommandBuilder } from 'discord.js';
 import { ISlashCommandPrototype } from './slash-command-prototype.interface';
 import { ISubCommandOptions } from './sub-command-options.interface';
 
-export const SlashCommand = (options: ISubCommandOptions) => {
+export const SubCommand = (options: ISubCommandOptions) => {
   const subCommandBuilder = (builder: SlashCommandSubcommandBuilder) =>
     builder.setName(options.name).setDescription(options.description);
 

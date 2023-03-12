@@ -1,4 +1,6 @@
 export interface IDiscordConfiguration {
+  clientID: string;
+  guildID: string;
   token: string;
 }
 
@@ -7,5 +9,9 @@ export interface IConfiguration {
 }
 
 export const DiscordConfiguration = (): IConfiguration => ({
-  discord: { token: process.env.DISCORD_BOT_TOKEN },
+  discord: {
+    clientID: process.env.DISCORD_CLIENT_ID,
+    guildID: process.env.DISCORD_GUILD_ID,
+    token: process.env.DISCORD_BOT_TOKEN,
+  },
 });

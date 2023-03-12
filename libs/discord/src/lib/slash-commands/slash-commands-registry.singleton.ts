@@ -1,3 +1,5 @@
+import { IRegisteredSlashCommand } from './registered-slash-command.interface';
+
 export class SlashCommandRegistry {
   private static _registry: SlashCommandRegistry;
 
@@ -8,11 +10,17 @@ export class SlashCommandRegistry {
     return SlashCommandRegistry._registry;
   }
 
-  private _commands: object[];
+  private _commands: IRegisteredSlashCommand[];
 
   private constructor() {
     this._commands = [];
   }
 
-  public 
+  public get commandCount(): number {
+    return this._commands.length;
+  }
+
+  public registerCommand(command: IRegisteredSlashCommand): void {
+    this._commands.push(command);
+  }
 }
