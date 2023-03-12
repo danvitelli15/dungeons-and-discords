@@ -1,1 +1,1 @@
-export * from './lib/discord.module';
+export * from './lib';
